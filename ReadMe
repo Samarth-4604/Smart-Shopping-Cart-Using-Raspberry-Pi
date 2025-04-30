@@ -1,46 +1,51 @@
 ReadMe
+This project consists of two parts. 1.Smart billing system and 2.Human following system
 
-AutoBilling System with UPI Payment Integration
+1.Smart billing System with UPI Payment Integration
 
-This project is a simple yet functional automatic billing system for small businesses. It allows shopkeepers to manage product inventory, generate bills, and accept UPI payments using a QR code.
+This part is a simple yet functional automatic billing system for small businesses. It allows shopkeepers to manage product inventory, generate bills, and accept UPI payments using a QR code.
 
 Features
-• Product Management: Add new products with price and quantity using AddNewProduct.py.
-• Automatic Billing: Scan product barcodes or enter product IDs to generate a bill.
+• Product Management: Add new products with name and price using AddNewProduct.py.Scan product barcodes or enter product IDs to add products on google sheet.
+• Automatic Billing: Scan product barcodes that the user buys to generate a bill.
 • Bill Summary: Displays total cost and itemized receipt.
 • Payment Integration: Includes a UPI QR code (Google Pay) for quick and easy customer payments.
 
 Files
 
-AddNewProduct.py
+1.AddNewProduct.py
 
 Script to add new products to the product database (JSON file). It allows you to:
 • Enter product name, price, and quantity.
 • Automatically update or append to the product list.
 
-AutomaticBilling.py
+2.AutomaticBilling.py
 
 Main script for running the billing system:
-• Loads product details from the database.
-• Accepts scanned/typed input for product ID.
+• Loads product details from the **Google Sheet (columns: Barcode, Item Name, Price)**.
+• Accepts scanned/typed input for product barcode (matching the 'Barcode' column).
 • Calculates total bill amount.
 • Displays a UPI QR code for payment.
+• Optionally prints a receipt using a connected thermal printer and displays information on an LCD.
 
-credentials.json
+3.credentials.json
 
 Service account key file for Google Cloud APIs.  
 - Download your own credentials.json from the Google Cloud Console when you create a Service Account (with Sheets/Drive API enabled).  
 - Place it in this project folder and rename it to credentials.json before running the scripts.
 
-paymentQr.jpg
+4.paymentQr.jpg
 
-Static UPI QR code for your Google Pay. Used for collecting payments directly from customers.
+-Static UPI QR code for your Google Pay. Used for collecting payments directly from customers.
+
+
 
 How to Use
-1. Run AddNewProduct.py to add or update your inventory.
+1.Run AddNewProduct.py to add or update your inventory.
 2.Run AutomaticBilling.py to start the billing system.
-3.At checkout, the script will show the total bill and display the UPI QR code for the customer to scan and pay.
-4.You can print or save the receipt if needed.
+3.After the customer has finished purchasing, the user types 'n' and presses Enter.
+4.Upon receiving the 'n' input, the script then prints a receipt of the purchased items along with a UPI QR code for payment on the connected thermal printer.
+
 
 Requirements
  • Python 3.x
@@ -79,7 +84,11 @@ auto-billing-system/
 
 
 
-Human Following Robot
+
+
+
+
+2.Human Following Cart
 
 This module makes your Raspberry Pi camera detect and follow a person. It sends simple movement commands (forward, left, right, stop) over USB serial to an Arduino Uno that drives the motors.
 
@@ -126,15 +135,15 @@ human-follow/
 
 Pi Setup
 
-         1. Enable the Pi camera
+1. Enable the Pi camera
    ```bash
 
    sudo raspi-config
 
    Choose Interface Options → Camera → Enable
    reboot
-
-
+ 
+ 
 2. Connect your Arduino Uno
  • Plug it into a USB port on the Pi.
  • Make sure it is running firmware that interprets single‑letter commands:
