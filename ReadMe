@@ -1,0 +1,173 @@
+ReadMe
+
+AutoBilling System with UPI Payment Integration
+
+This project is a simple yet functional automatic billing system for small businesses. It allows shopkeepers to manage product inventory, generate bills, and accept UPI payments using a QR code.
+
+Features
+• Product Management: Add new products with price and quantity using AddNewProduct.py.
+• Automatic Billing: Scan product barcodes or enter product IDs to generate a bill.
+• Bill Summary: Displays total cost and itemized receipt.
+• Payment Integration: Includes a UPI QR code (Google Pay) for quick and easy customer payments.
+
+Files
+
+AddNewProduct.py
+
+Script to add new products to the product database (JSON file). It allows you to:
+• Enter product name, price, and quantity.
+• Automatically update or append to the product list.
+
+AutomaticBilling.py
+
+Main script for running the billing system:
+• Loads product details from the database.
+• Accepts scanned/typed input for product ID.
+• Calculates total bill amount.
+• Displays a UPI QR code for payment.
+
+credentials.json
+
+Service account key file for Google Cloud APIs.  
+- Download your own credentials.json from the Google Cloud Console when you create a Service Account (with Sheets/Drive API enabled).  
+- Place it in this project folder and rename it to credentials.json before running the scripts.
+
+paymentQr.jpg
+
+Static UPI QR code for your Google Pay. Used for collecting payments directly from customers.
+
+How to Use
+1. Run AddNewProduct.py to add or update your inventory.
+2.Run AutomaticBilling.py to start the billing system.
+3.At checkout, the script will show the total bill and display the UPI QR code for the customer to scan and pay.
+4.You can print or save the receipt if needed.
+
+Requirements
+ • Python 3.x
+ • json (built-in)
+
+Required Libraries:
+1. gspread
+For interacting with Google Sheets.
+2. oauth2client
+To use Google Sheets API with service account credentials.
+3. rpi_lcd
+For controlling an LCD connected to Raspberry Pi.
+4. PIL (from Pillow)
+For image processing, like working with QR code or product images.
+5. escpos (specifically escpos.printer.Usb)
+For printing bills/receipts using a USB thermal printer.
+
+pip install gspread oauth2client pillow python-escpos
+
+        For rpi_lcd, you can install using:
+
+pip install rpi_lcd
+
+Final layout
+
+auto-billing-system/
+├── AddNewProduct.py       # Script to add or update products
+├── AutomaticBilling.py        # Main billing + printer + LCD script
+├── credentials.json       # Your Google Service Account keyfile
+├── paymentQr.jpg          # QR code image for UPI payments
+└── README.md              # Project overview & setup instructions
+
+
+
+
+
+
+
+Human Following Robot
+
+This module makes your Raspberry Pi camera detect and follow a person. It sends simple movement commands (forward, left, right, stop) over USB serial to an Arduino Uno that drives the motors.
+
+---
+
+Features
+
+- Real‑time person detection using OpenCV’s MobileNetSSD model  
+- Automatic movement commands sent to Arduino Uno  
+- Live camera preview so you can see what the Pi sees  
+- Safe shutdown: motors stop when you quit the program  
+
+---
+
+Requirements
+
+- Hardware
+  - Raspberry Pi with a CSI camera (e.g. Pi Camera V2)  
+  - Arduino Uno (or any serial‑controlled motor driver)  
+  - Motor driver board and wheels/chassis  
+
+- Software
+  - Python 3 installed on your Raspberry Pi  
+  - The following Python packages:
+       pip install opencv-python picamera2 pyserial
+    
+- Model files
+  - deploy.prototxt  
+  - MobileNetSSD_deploy.caffemodel  
+  Place both in the same folder as human_follow.py.
+
+---
+
+Folder Layout
+
+human-follow/
+├── deploy.prototxt
+├── MobileNetSSD_deploy.caffemodel
+├── human_follow.py
+└── README.md
+
+
+---
+
+Pi Setup
+
+         1. Enable the Pi camera
+   ```bash
+
+   sudo raspi-config
+
+   Choose Interface Options → Camera → Enable
+   reboot
+
+
+2. Connect your Arduino Uno
+ • Plug it into a USB port on the Pi.
+ • Make sure it is running firmware that interprets single‑letter commands:
+ • F → forward
+ • L → turn left
+ • R → turn right
+ • S → stop
+3. Adjust settings in human_follow.py
+ • SERIAL_PORT: your Arduino’s device (e.g. /dev/ttyUSB0 or /dev/ttyACM0)
+ • BAUD_RATE: must match your Arduino sketch (usually 9600)
+ • CONFIDENCE_THRESHOLD: change if the detector misses or misfires
+
+
+Run the script 
+
+python3 human_follow.py
+
+
+A window named “Camera Feed” will open.
+ • The robot will follow the first person it sees:
+ • Person on the left → robot turns left
+ • Person on the right → robot turns right
+ • Person centered → robot moves forward
+  • No person → robot stops
+ • Press q in the window or Ctrl+C in the terminal to stop.
+ • On exit, the script sends S to stop the motors and closes everything cleanly.
+
+
+Troubleshooting
+ • No video window?
+ • Confirm the camera is enabled and connected.
+ • Serial errors?
+ • Check the serial port path and permissions:
+
+ls /dev/ttyUSB* /dev/ttyACM*
+sudo usermod -a -G dialout pi
